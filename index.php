@@ -6,15 +6,15 @@
  * Оформить решение в виде функции которая принимает исходный массив и возвращает массив с результатом проверки каждой группы, где 1 удовлетворяет условию и 0 - нет.
 */
 
-function groupCheck($arr): array
+function groupCheck(array $nums): array
 {
-    $resArr = [];
-    foreach ($arr as $key => $value) {
-        $modifiedArr = array_slice($arr, $key, 3);
-        if (count($modifiedArr) >= 3) {
-            if ($modifiedArr[0] > $modifiedArr[1] && $modifiedArr[1] < $modifiedArr[2]) {
+    $resultArr = [];
+    foreach ($nums as $key => $num) {
+        $slicedArr = array_slice($nums, $key, 3);
+        if (count($slicedArr) >= 3) {
+            if ($slicedArr[0] > $slicedArr[1] && $slicedArr[1] < $slicedArr[2]) {
                 $result = 1;
-            } elseif ($modifiedArr[0] < $modifiedArr[1] && $modifiedArr[1] > $modifiedArr[2]) {
+            } elseif ($slicedArr[0] < $slicedArr[1] && $slicedArr[1] > $slicedArr[2]) {
                 $result = 1;
             } else {
                 $result = 0;
@@ -22,13 +22,13 @@ function groupCheck($arr): array
         } else {
             break;
         }
-        array_push($resArr, $result);
+        array_push($resultArr, $result);
     }
-    return $resArr;
+    return $resultArr;
 }
 
-$arr = [1, 3, 5, 4, 5, 7];
-print_r(groupCheck($arr));
+$nums = [1, 3, 5, 4, 5, 7];
+print_r(groupCheck($nums));
 
 
 /*
@@ -37,21 +37,20 @@ print_r(groupCheck($arr));
  * Необходимо определить содержит ли каждый участок матрицы 3 * 3 все числа от 1 до 9.
 */
 
-function checkGroup($nums): array
+function checkGroup(array $nums): array
 {
-    $check = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    $checkOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     $matches = [];
     $length = count($nums[0]);
 
     for ($a = 0; $a < $length - 2; $a++) {
-        $block_items = [];
+        $matrixItems = [];
         foreach ($nums as $rows) {
             for ($j = $a; $j < $a + 3; $j++) {
-                $block_items[] = $rows[$j];
+                $matrixItems[] = $rows[$j];
             }
         }
-        $diff = array_diff($check, $block_items);
-
+        $diff = array_diff($checkOrder, $matrixItems);
         $matches[] = !count(($diff)) ? 'true' : 'false';
     }
     return $matches;
@@ -71,44 +70,44 @@ print_r(checkGroup($nums));
  * Текст должен быть заключен символ * со всех сторон.
 */
 
-function stringCheck($text, $formatting, $limit): array
+function stringCheck(array $textArr, array $formatting, int $strLimit): array
 {
-    $completedArr = [];
-    array_push($completedArr, str_repeat('*', 18));
+    $formattedArr = [];
+    array_push($formattedArr, str_repeat('*', 18));
 
-    foreach ($text as $key => $item) {
-        $textToString = implode(' ', $item);
-        $countString = strlen($textToString);
+    foreach ($textArr as $key => $item) {
+        $text = implode(' ', $item);
+        $countStr = strlen($text);
 
-        if ($countString <= $limit) {
-            $diff = $limit - $countString;
+        if ($countStr <= $strLimit) {
+            $diff = $strLimit - $countStr;
             if ($formatting[$key] === 'LEFT') {
-                array_push($completedArr, '*' . $textToString . str_repeat(' ', $diff) . '*');
+                array_push($formattedArr, '*' . $text . str_repeat(' ', $diff) . '*');
             } else {
-                array_push($completedArr, '*' . str_repeat(' ', $diff) . $textToString . '*');
+                array_push($formattedArr, '*' . str_repeat(' ', $diff) . $text . '*');
             }
         } else {
-            $str = wordwrap($textToString, 16);
+            $str = wordwrap($text, 16);
             $str = explode(PHP_EOL, $str);
             foreach ($str as $s) {
-                $diff = $limit - strlen($s);
+                $diff = $strLimit - strlen($s);
                 if ($formatting[$key] === 'LEFT') {
-                    array_push($completedArr, '*' . $s . str_repeat(' ', $diff) . '*');
+                    array_push($formattedArr, '*' . $s . str_repeat(' ', $diff) . '*');
                 } else {
-                    array_push($completedArr, '*' . str_repeat(' ', $diff) . $s . '*');
+                    array_push($formattedArr, '*' . str_repeat(' ', $diff) . $s . '*');
                 }
             }
         }
     }
-    array_push($completedArr, str_repeat('*', 18));
-    return $completedArr;
+    array_push($formattedArr, str_repeat('*', 18));
+    return $formattedArr;
 }
 
-$text = [
+$textArr = [
     ['Hello', 'world'],
     ['Brad', 'came', 'to', 'dinner', 'with', 'us'],
     ['He', 'loves', 'tacos']
 ];
 $formatting = ['LEFT', 'RIGHT', 'LEFT'];
-$limit = 16;
-print_r(stringCheck($text, $formatting, $limit));
+$strLimit = 16;
+print_r(stringCheck($textArr, $formatting, $strLimit));
